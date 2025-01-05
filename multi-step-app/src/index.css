@@ -53,25 +53,3 @@ button:focus,
 button:focus-visible {
     outline: 4px solid -webkit-focus-ring-color;
 }
-
-@layer utilities {
-    .checkmark {
-        clip-path: polygon(40% 69%, 83% 8%, 94% 16%, 41% 91%, 7% 50%, 16% 40%);
-        color: white;
-    }
-    .test:after {
-        position: relative;
-        display: block;
-        left: 2px;
-        top: -11px;
-        width: 7px;
-        height: 7px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #b3b3b3 #dcddde #dcddde #b3b3b3;
-        content: '';
-        background-image: linear-gradient(135deg, #b1b6be 0%, #fff 100%);
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-}

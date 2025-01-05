@@ -3,6 +3,7 @@ import { Formik } from 'formik'
 import { useContext } from 'react'
 import { FormContext } from '../contexts/FormContext'
 import checkmarkIcon from '../assets/images/icon-checkmark.svg'
+import { getServiceCosting } from '../utils/util'
 
 const Step3 = ({ saveNewFormValues, updateFormStep }) => {
     const { formValues } = useContext(FormContext)
@@ -22,7 +23,7 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
             }}
         >
             {({ values, handleChange, handleSubmit }) => (
-                <section className="flex flex-col items-start rounded-lg bg-white w-11/12 p-6">
+                <section className="flex flex-col items-start rounded-lg bg-white w-11/12 p-6 shadow-md">
                     <h1 className="text-sky-950 font-semibold text-2xl mb-2">
                         Pick add-ons
                     </h1>
@@ -40,11 +41,12 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                 name="online_service"
                                 className="sr-only peer/os"
                                 value={values.online_service}
+                                checked={values.online_service}
                                 onChange={handleChange}
                             />
-                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-500 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
+                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-300 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
                                 <img
-                                    className="rounded-sm border border-solid border-gray-500 w-5 h-5 p-0.5"
+                                    className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5"
                                     src={checkmarkIcon}
                                 />
                                 <div className="flex rounded-md gap-4">
@@ -59,9 +61,13 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                 </div>
                                 {/* </div> */}
                                 <p className="text-indigo-600 font-normal text-xs w-fit">
-                                    {values.yearly_subscription
-                                        ? '+$10/yr'
-                                        : '+$1/mo'}
+                                    {'+' +
+                                        getServiceCosting(
+                                            'Online service',
+                                            formValues.yearly_subscription
+                                                ? 'Yearly'
+                                                : 'Monthly'
+                                        ).text}
                                 </p>
                             </div>
                         </label>
@@ -72,11 +78,12 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                 name="larger_storage"
                                 className="sr-only peer/os"
                                 value={values.larger_storage}
+                                checked={values.larger_storage}
                                 onChange={handleChange}
                             />
-                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-500 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
+                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-300 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
                                 <img
-                                    className="rounded-sm border border-solid border-gray-500 w-5 h-5 p-0.5"
+                                    className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5"
                                     src={checkmarkIcon}
                                 />
                                 <div className="flex rounded-md gap-4">
@@ -90,9 +97,13 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                     </div>
                                 </div>
                                 <p className="text-indigo-600 font-normal text-xs w-fit">
-                                    {values.yearly_subscription
-                                        ? '+$20/yr'
-                                        : '+$2/mo'}
+                                    {'+' +
+                                        getServiceCosting(
+                                            'Larger storage',
+                                            formValues.yearly_subscription
+                                                ? 'Yearly'
+                                                : 'Monthly'
+                                        ).text}
                                 </p>
                             </div>
                         </label>
@@ -103,11 +114,12 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                 name="customizable_profile"
                                 className="sr-only peer/os"
                                 value={values.customizable_profile}
+                                checked={values.customizable_profile}
                                 onChange={handleChange}
                             />
-                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-500 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
+                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-300 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
                                 <img
-                                    className="rounded-sm border border-solid border-gray-500 w-5 h-5 p-0.5"
+                                    className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5"
                                     src={checkmarkIcon}
                                 />
                                 <div className="flex rounded-md gap-4">
@@ -121,9 +133,13 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                     </div>
                                 </div>
                                 <p className="text-indigo-600 font-normal text-xs w-fit">
-                                    {values.yearly_subscription
-                                        ? '+$10/yr'
-                                        : '+$1/mo'}
+                                    {'+' +
+                                        getServiceCosting(
+                                            'Customizable profile',
+                                            formValues.yearly_subscription
+                                                ? 'Yearly'
+                                                : 'Monthly'
+                                        ).text}
                                 </p>
                             </div>
                         </label>
@@ -137,7 +153,7 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                         <input
                             type="submit"
                             value="Next Step"
-                            className="text-white bg-sky-950 font-medium"
+                            className="text-sm text-white bg-sky-950 font-medium border-none"
                         />
                     </form>
                 </section>

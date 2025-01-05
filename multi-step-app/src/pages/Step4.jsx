@@ -1,114 +1,153 @@
 import PropTypes from 'prop-types'
-import { Formik } from 'formik'
 import { useContext } from 'react'
 import { FormContext } from '../contexts/FormContext'
-import checkmarkIcon from '../assets/images/icon-checkmark.svg'
-import { getPlanCosting } from '../utils/util'
+import thankYouIcon from '../assets/images/icon-thank-you.svg'
+import {
+    listOfServices,
+    getServiceCosting,
+    getServiceNameFromKey,
+    getPlanCosting,
+} from '../utils/util'
 
 const Step4 = ({ saveNewFormValues, updateFormStep }) => {
     const { formValues } = useContext(FormContext)
     console.log('Step 3 state:', formValues)
 
-    return (
-        <Formik
-            initialValues={{
-                online_service: formValues.online_service || false,
-                larger_storage: formValues.larger_storage || false,
-                customizable_profile: formValues.customizable_profile || false,
-            }}
-            onSubmit={(values) => {
-                saveNewFormValues(values)
-                updateFormStep(4)
-            }}
-        >
-            {({ values, handleChange, handleSubmit }) => (
-                <section className="flex flex-col items-start rounded-lg bg-white w-11/12 p-6">
-                    <h1 className="text-sky-950 font-semibold text-2xl mb-2">
-                        Finishing up
-                    </h1>
-                    <p className="text-gray-500 text-left font-normal mb-4">
-                        Double-check everything looks OK before confirming.
-                    </p>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col items-start w-full gap-3"
-                    >
-                        <ul className="w-full">
-                            <li className="flex justify-between items-center">
-                                <div className="flex flex-col">
-                                    <p className="text-sm text-sky-950 font-bold">
-                                        {formValues.plan_type} (
-                                        {formValues.plan_subscription
-                                            ? 'Yearly'
-                                            : 'Monthly'}
-                                        )
-                                    </p>
-                                    <input
-                                        type="button"
-                                        value="Change"
-                                        onClick={() =>
-                                            updateFormStep(formValues.step - 1)
-                                        }
-                                        className="p-0 w-fit text-sm text-gray-500 bg-transparent border-none underline"
-                                    />
-                                </div>
-                                <p className="text-sm text-sky-950 font-bold">
-                                    $9/mo
-                                    {/* {getPlanCosting(
-                                    formValues.plan_type,
-                                    formValues.plan_subscription
-                                )} */}
-                                </p>
-                            </li>
-                            <li></li>
-                        </ul>
-                        <label className="w-full">
-                            <input
-                                type="checkbox"
-                                id="larger_storage"
-                                name="larger_storage"
-                                className="sr-only peer/os"
-                                value={values.larger_storage}
-                                onChange={handleChange}
-                            />
-                            <div className="grid grid-cols-[1fr_5fr_1fr] items-center p-4 rounded-md border border-solid border-gray-500 peer-checked/os:bg-purple-100/40 peer-checked/os:border-purple-900 peer-checked/os:[&>*:first-child]:bg-indigo-600">
-                                <img
-                                    className="rounded-sm border border-solid border-gray-500 w-5 h-5 p-0.5"
-                                    src={checkmarkIcon}
-                                />
-                                <div className="flex rounded-md gap-4">
-                                    <div className="flex flex-col justify-start">
-                                        <strong className="text-sky-950 font-bold text-sm w-fit">
-                                            Larger storage
-                                        </strong>
-                                        <p className="text-gray-500 font-normal text-xs w-fit">
-                                            Extra 1TB of cloud save
-                                        </p>
-                                    </div>
-                                </div>
-                                <p className="text-indigo-600 font-normal text-xs w-fit">
-                                    {values.plan_subscription
-                                        ? '+$20/yr'
-                                        : '+$2/mo'}
-                                </p>
-                            </div>
-                        </label>
+    const subPeriod = formValues.yearly_subscription ? 'Yearly' : 'Monthly'
 
-                        <input
-                            type="button"
-                            value="Go Back"
-                            onClick={() => updateFormStep(formValues.step - 1)}
-                            className="text-gray-500 bg-transparent font-medium border-none"
-                        />
-                        <input
-                            type="submit"
-                            value="Next Step"
-                            className="text-white bg-sky-950 font-medium"
-                        />
-                    </form>
-                </section>
-            )}
-        </Formik>
+    const selectedServices = () => {
+        const selectedServicesKeys = Object.keys(formValues).filter(
+            (formField) =>
+                listOfServices.includes(formField) &&
+                formValues[formField] === true
+        )
+        return selectedServicesKeys.map((serviceKey) => ({
+            name: getServiceNameFromKey(serviceKey),
+            costObj: getServiceCosting(
+                getServiceNameFromKey(serviceKey),
+                subPeriod
+            ),
+        }))
+    }
+
+    const getPlanCostingText = () =>
+        getPlanCosting(formValues.plan_type, subPeriod).text
+
+    const getPlanCostingValue = () =>
+        getPlanCosting(formValues.plan_type, subPeriod).value
+
+    const isMonthlySub = () => !formValues.yearly_subscription
+    const isYearlySub = () => formValues.yearly_subscription
+
+    const getTotalCost = () => {
+        const planCost = getPlanCostingValue()
+        const servicesCost = selectedServices().reduce(
+            (accumulator, service) => accumulator + service.costObj.value,
+            0
+        )
+        const subPeriod = isMonthlySub() ? 'mo' : 'yr'
+        return `+${planCost + servicesCost}/${subPeriod}`
+    }
+
+    const onConfirm = () => {
+        saveNewFormValues({ complete: true })
+    }
+
+    console.log(JSON.stringify(selectedServices()))
+
+    if (formValues.complete) {
+        return (
+            <section className="flex flex-col items-center rounded-lg bg-white w-11/12 px-6 py-20 gap-2 shadow-md">
+                <img
+                    src={thankYouIcon}
+                    alt="Icon of a checkmark"
+                    className="mb-4 w-14"
+                />
+                <h2 className="text-xl font-bold">Thank you!</h2>
+                <p className="text-gray-500 font-normal">
+                    Thanks for confirming your subscription! We hope you have
+                    fun using our platform. If you ever need support, please
+                    feel free to email us at support@loremgaming.com.
+                </p>
+            </section>
+        )
+    }
+
+    return (
+        <section className="flex flex-col items-start rounded-lg bg-white w-11/12 p-6 shadow-md">
+            <h1 className="text-sky-950 font-semibold text-2xl mb-2">
+                Finishing up
+            </h1>
+            <p className="text-gray-500 text-left font-normal mb-4">
+                Double-check everything looks OK before confirming.
+            </p>
+            <div className="flex flex-col items-start w-full gap-3">
+                <ul className="flex flex-col gap-2 w-full bg-gray-100 p-4 rounded-md">
+                    <li className="flex justify-between items-center">
+                        <div className="flex flex-col">
+                            <p className="text-sm text-sky-950 font-bold">
+                                {formValues.plan_type} ({subPeriod})
+                            </p>
+                            <input
+                                type="button"
+                                value="Change"
+                                onClick={() => updateFormStep(2)}
+                                className="p-0 w-fit text-sm text-gray-500 bg-transparent border-none underline h-auto"
+                            />
+                        </div>
+                        <p className="text-sm text-sky-950 font-bold">
+                            {getPlanCostingText()}
+                        </p>
+                    </li>
+                    {selectedServices().length > 0 && (
+                        <>
+                            <hr />
+                            {selectedServices().map((service) => (
+                                <li
+                                    key={service.name}
+                                    className="flex justify-between items-center"
+                                >
+                                    <p className="text-sm text-gray-500 font-normal">
+                                        {service.name}
+                                    </p>
+                                    <p className="text-sm text-gray-500 font-normal">
+                                        +{service.costObj.text}
+                                    </p>
+                                </li>
+                            ))}
+                        </>
+                    )}
+                </ul>
+                <ul className="flex flex-col gap-2 w-full px-4 pb-4">
+                    <li className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500 font-normal">
+                            Total{' '}
+                            {isMonthlySub()
+                                ? '(per month)'
+                                : isYearlySub()
+                                ? '(per year)'
+                                : ''}
+                        </p>
+                        <p className="text-purple-800 font-bold">
+                            {getTotalCost()}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <input
+                type="button"
+                value="Go Back"
+                onClick={() => updateFormStep(formValues.step - 1)}
+                className="text-gray-500 bg-transparent font-medium border-none"
+            />
+            <input
+                type="button"
+                value="Confirm"
+                onClick={onConfirm}
+                className="text-sm text-white bg-purple-800 font-medium border-none"
+            />
+        </section>
     )
 }
 

@@ -21,7 +21,8 @@ const FormContainer = () => {
         console.log('Pre-update step formValues: ', {
             ...formValues,
         })
-        setFormValues({ ...formValues, step: newStep })
+        // Needed to add the (prevState to get state updates to persist, ask CoPilot why)
+        setFormValues((prevState) => ({ ...prevState, step: newStep }))
         console.log('Updated step formValues: ', {
             ...formValues,
             step: newStep,
@@ -71,12 +72,12 @@ const FormContainer = () => {
     }
 
     return (
-        <main className="bg-gray-300 h-[100%] w-[100%] flex items-center justify-center">
+        <>
             {formValues && formValues.step
                 ? renderCurrentFormStep(formValues.step)
                 : null}
             {/* <Step1 saveFormState={updateFormValues} /> */}
-        </main>
+        </>
     )
 }
 

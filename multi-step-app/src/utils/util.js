@@ -1,21 +1,18 @@
 const getPlanCosting = (plan, subscription) => {
     switch (plan) {
         case 'Arcade':
-            return subscription === 'Monthly'
-                ? { text: '$9/mo', value: 9 }
-                : { text: '$90/yr', value: 90 }
+            return subscription === 'Yearly'
+                ? { text: '$90/yr', value: 90 } : { text: '$9/mo', value: 9 }
         case 'Advanced':
-            return subscription === 'Monthly'
-                ? { text: '$12/mo', value: 12 }
-                : { text: '$120/yr', value: 120 }
+            return subscription === 'Yearly'
+                ? { text: '$120/yr', value: 120 } : { text: '$12/mo', value: 12 }
         case 'Pro':
-            return subscription === 'Monthly'
-                ? { text: '$15/mo', value: 15 }
-                : { text: '$150/yr', value: 150 }
+            return subscription === 'Yearly'
+                ? { text: '$150/yr', value: 150 } : { text: '$15/mo', value: 15 }
     }
 }
 
-const getAddonCosting = (service, subscription) => {
+const getServiceCosting = (service, subscription) => {
     switch (service) {
         case 'Online service':
             return subscription === 'Monthly'
@@ -32,4 +29,16 @@ const getAddonCosting = (service, subscription) => {
     }
 }
 
-export { getPlanCosting, getAddonCosting }
+const getServiceNameFromKey = (serviceKey) => {
+    switch (serviceKey) {
+        case 'online_service':
+            return 'Online service'
+        case 'larger_storage':
+            return 'Larger storage'
+        case 'customizable_profile':
+            return 'Customizable profile'
+    }
+}
+const listOfServices = ['online_service', 'larger_storage', 'customizable_profile']
+
+export { getPlanCosting, getServiceCosting, getServiceNameFromKey, listOfServices }

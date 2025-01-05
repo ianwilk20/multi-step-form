@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FormContext } from './contexts/FormContext'
-import FormContainer from './pages/FormContainer'
 import './App.css'
+import FormPage from './pages/FormPage'
 
 function App() {
     const [formValues, setFormValues] = useState({ step: 1 })
@@ -10,7 +10,7 @@ function App() {
     return (
         <>
             <FormContext.Provider value={{ formValues, setFormValues }}>
-                <FormContainer />
+                <FormPage />
             </FormContext.Provider>
         </>
     )
