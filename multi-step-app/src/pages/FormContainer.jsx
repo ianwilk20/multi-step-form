@@ -29,8 +29,6 @@ const FormContainer = () => {
         })
     }
 
-    // const changeFormStep = ()
-
     const renderCurrentFormStep = (stepNumber) => {
         switch (stepNumber) {
             case 1:

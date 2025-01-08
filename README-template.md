@@ -68,25 +68,27 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+- I learned the basics of the Formik library to develop this multi-step form.
+- I ran into a bug where the form values setState wasn't working as expected. When a form was submitted it would first call `updateFormValues()` then `updateFormStep()`. Here was my original code: 
+```JS
+const { formValues, setFormValues } = useContext(FormContext)
+const updateFormValues = (newValues) => {
+    setFormValues({ ...formValues, ...newValues })
+}
 
-To see how you can add code snippets, see below:
-
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
+const updateFormStep = (newStep) => {
+  setFormValues({ ...prevState, step: newStep })
 }
 ```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
+It turns out that `updateFormStep()`'s setFormValues was not getting the most up-to-date formValues because React has a tendency of batching state updates togther. As a result, I modified the `updateFormStep()` function as follows:
+```JS
+const updateFormStep = (newStep) => {
+  setFormValues((prevState) => ({ ...prevState, step: newStep }))
 }
 ```
+Now the setFormValues will always provide us with the latest state (prevState) and we use that in updating our state. Meaning, our state management is more robust and predicatable.
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+- I learned how to make the the navigation bar always stays at the bottom without overlapping the expanding form. It involved using a flexbox layout to ensure that the navigation bar always stays at the bottom of the continaer while allowing the form to expand as needed. To accomplish this my flexbox container that would hold my form and navigation bar has a height of 100vh, sits above all of the page content, and has a margin to offset it from the top of the page (as shown in the mockup). The form inside the flexbox container has a `flex-grow: 1` will occupy all the available vertical space in the container, but it won't encroach upon or overlap the navigation bar. If the form needs to grow beyond the container's (like when the form expands due to hidden fields) scrolling will occur within the container. The navigation bar sits at the bottom of the container always.
 
 **Note: Delete this note and the content within this section and replace with your own learnings.**
 

@@ -7,6 +7,13 @@ export default {
     theme: {
         fontFamily: {
             'ubuntu': ["Ubuntu", "sans-serif"]
+        },
+        extend: {
+            fontWeight: {
+                medium: 500,
+                bold: 700
+                //Continue working on getting the new locally hosted fonts working so that the font weights work
+            }
         }
     },
     plugins: [],
