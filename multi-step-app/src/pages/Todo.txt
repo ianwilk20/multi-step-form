@@ -1,0 +1,5 @@
+- Extract the form header and footer into components - is there a way to also do that for the section and form elements
+- README
+- Hover/focus states (done)
+- Make all steps responsive (done)
+- Medium size increase size of navigation image (not wide enough) (done)
