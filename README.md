@@ -34,19 +34,26 @@ Users should be able to:
 ### Screenshot
 
 Mobile:
-![Mobile initial screen](/design/completed/mobile-init.png)
-![Mobile cart with items](design/completed/mobile-cart-w-items.png)
-![Mobile menu](/design/completed/mobile-menu.png)
+
+![Mobile step 1](/design/completed/mobile-step-1.png)
+![Mobile step 2](/design/completed/mobile-step-2.png)
+![Mobile step 3](/design/completed/mobile-step-3.png)
+![Mobile step 4](/design/completed/mobile-step-4.png)
+![Mobile completed form](/design/completed/mobile-completed-form.png)
+
 
 Desktop:
-![Desktop initial screen](/design/completed/desktop-init.png)
-![Desktop empty cart](design/completed/desktop-empty-cart.png)
-![Desktop cart with items](/design/completed/desktop-cart-w-items.png)
+
+![Desktop step 1](/design/completed/desktop-step-1.png)
+![Desktop step 2](/design/completed/desktop-step-2.png)
+![Desktop step 3](/design/completed/desktop-step-3.png)
+![Desktop step 4](/design/completed/desktop-step-4.png)
+![Desktop completed form](/design/completed/desktop-completed-form.png)
 
 ### Links
 
-- [Solution URL](https://github.com/ianwilk20/)
-- [Live Site URL](https://ianwilk20.netlify.app/)
+- [Solution URL](https://github.com/ianwilk20/multi-step-form)
+- [Live Site URL](https://multi-step-form-ianwilk20.netlify.app/)
 
 ## My process
 
@@ -58,10 +65,29 @@ Desktop:
 - Mobile-first workflow
 - [Tailwind](https://tailwindcss.com/docs) - For styles
 - [React](https://reactjs.org/) - JS library
+- [Formik](https://formik.org/) - Form library
 
 ### What I learned
 
 - I learned the basics of the Formik library to develop this multi-step form.
+- I ran into a bug where the form values setState wasn't working as expected. When a form was submitted it would first call `updateFormValues()` then `updateFormStep()`. Here was my original code: 
+```JS
+const { formValues, setFormValues } = useContext(FormContext)
+const updateFormValues = (newValues) => {
+    setFormValues({ ...formValues, ...newValues })
+}
+
+const updateFormStep = (newStep) => {
+  setFormValues({ ...prevState, step: newStep })
+}
+```
+It turns out that `updateFormStep()`'s setFormValues was not getting the most up-to-date formValues because React has a tendency of batching state updates togther. As a result, I modified the `updateFormStep()` function as follows:
+```JS
+const updateFormStep = (newStep) => {
+  setFormValues((prevState) => ({ ...prevState, step: newStep }))
+}
+```
+Now the setFormValues will always provide us with the latest state (prevState) and we use that in updating our state. Meaning, our state management is more robust and predicatable.
 
 - I learned how to make the the navigation bar always stays at the bottom without overlapping the expanding form. It involved using a flexbox layout to ensure that the navigation bar always stays at the bottom of the continaer while allowing the form to expand as needed. To accomplish this my flexbox container that would hold my form and navigation bar has a height of 100vh, sits above all of the page content, and has a margin to offset it from the top of the page (as shown in the mockup). The form inside the flexbox container has a `flex-grow: 1` will occupy all the available vertical space in the container, but it won't encroach upon or overlap the navigation bar. If the form needs to grow beyond the container's (like when the form expands due to hidden fields) scrolling will occur within the container. The navigation bar sits at the bottom of the container always.
 

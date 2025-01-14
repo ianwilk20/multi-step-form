@@ -61,7 +61,7 @@ const Step4 = ({ saveNewFormValues, updateFormStep }) => {
                 <div className="flex flex-col items-center gap-3 w-11/12 md:w-full rounded-lg bg-white px-6 py-16 shadow-md md:shadow-none md:px-10 md:pb-0 md:pt-6 lg:pt-8 md:gap-0">
                     <img
                         src={thankYouIcon}
-                        alt="Icon of a checkmark"
+                        alt="Checkmark icon"
                         className="mb-4 w-14 md:mb-6 md:w-16 lg:w-[4.5rem]"
                     />
                     <h2 className="text-xl font-bold md:text-2xl lg:text-3xl md:mb-2 lg:mb-3">
@@ -98,7 +98,7 @@ const Step4 = ({ saveNewFormValues, updateFormStep }) => {
                                         type="button"
                                         value="Change"
                                         onClick={() => updateFormStep(2)}
-                                        className="p-0 w-fit text-sm text-gray-500 hover:text-purple-800 bg-transparent border-none underline h-auto"
+                                        className="p-0 w-fit text-sm text-gray-600 hover:text-purple-800 bg-transparent border-none underline h-auto"
                                     />
                                 </div>
                                 <p className="text-sm text-sky-950 font-bold">
@@ -107,13 +107,15 @@ const Step4 = ({ saveNewFormValues, updateFormStep }) => {
                             </li>
                             {selectedServices().length > 0 && (
                                 <>
-                                    <hr className="my-3" />
+                                    <li>
+                                        <hr className="my-3" />
+                                    </li>
                                     {selectedServices().map((service) => (
                                         <li
                                             key={service.name}
                                             className="flex justify-between items-center mb-2"
                                         >
-                                            <p className="text-sm text-gray-500 font-normal">
+                                            <p className="text-sm text-gray-600 font-normal">
                                                 {service.name}
                                             </p>
                                             <p className="text-sm text-sky-950 font-normal">

@@ -196,6 +196,7 @@ const Step2 = ({ saveNewFormValues, updateFormStep }) => {
                                 <label
                                     htmlFor="yearly_subscription"
                                     className="relative inline-block w-12 h-6 peer-checked/subscription:[&>]:before:translate-x-6"
+                                    title="Yearly or monthly subscription"
                                 >
                                     <span className="absolute cursor-pointer top-0 bottom-0 left-0 right-0 bg-sky-950 duration-300 rounded-full before:absolute before:content-[''] before:w-4 before:h-4 before:left-1 before:bottom-1 before:bg-white before:duration-300 before:rounded-full"></span>
                                 </label>

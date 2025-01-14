@@ -52,6 +52,7 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                         <img
                                             className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5 lg:ml-2"
                                             src={checkmarkIcon}
+                                            alt="Checkmark icon"
                                         />
                                         <div className="flex rounded-md gap-4">
                                             <div className="flex flex-col justify-start">
@@ -89,6 +90,7 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                         <img
                                             className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5 lg:ml-2"
                                             src={checkmarkIcon}
+                                            alt="Checkmark icon"
                                         />
                                         <div className="flex rounded-md gap-4">
                                             <div className="flex flex-col justify-start">
@@ -125,6 +127,7 @@ const Step3 = ({ saveNewFormValues, updateFormStep }) => {
                                         <img
                                             className="rounded-sm border border-solid border-gray-300 w-5 h-5 p-0.5 lg:ml-2"
                                             src={checkmarkIcon}
+                                            alt="Checkmark icon"
                                         />
                                         <div className="flex rounded-md gap-4">
                                             <div className="flex flex-col justify-start">
